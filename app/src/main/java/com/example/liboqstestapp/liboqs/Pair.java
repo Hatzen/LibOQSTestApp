@@ -21,8 +21,8 @@ public class Pair<L, R> {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof de.hartz.software.parannoying.helper.security.liboqs.java.Pair)) return false;
-        de.hartz.software.parannoying.helper.security.liboqs.java.Pair pairo = (de.hartz.software.parannoying.helper.security.liboqs.java.Pair) o;
+        if (!(o instanceof Pair)) return false;
+        Pair pairo = (Pair) o;
         return this.left.equals(pairo.getLeft()) && this.right.equals(pairo.getRight());
     }
 

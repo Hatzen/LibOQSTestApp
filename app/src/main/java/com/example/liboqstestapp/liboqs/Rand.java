@@ -6,7 +6,7 @@ package com.example.liboqstestapp.liboqs;
 public class Rand {
 
     static {
-        de.hartz.software.parannoying.helper.security.liboqs.java.Common.loadNativeLibrary();
+        Common.loadNativeLibrary();
     }
 
     private Rand() {}

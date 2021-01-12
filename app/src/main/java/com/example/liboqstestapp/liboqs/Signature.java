@@ -69,7 +69,7 @@ public class Signature {
         if (!Sigs.is_sig_enabled(alg_name)) {
             // perhaps it's supported
             if (Sigs.is_sig_supported(alg_name)) {
-                throw new de.hartz.software.parannoying.helper.security.liboqs.java.MechanismNotEnabledError(alg_name);
+                throw new MechanismNotEnabledError(alg_name);
             } else {
                 throw new MechanismNotSupportedError(alg_name);
             }

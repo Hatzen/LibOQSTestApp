@@ -1,5 +1,7 @@
 package com.example.liboqstestapp.liboqs;
 
+import android.os.Build;
+
 import java.util.Arrays;
 
 public class Common {
@@ -23,6 +25,9 @@ public class Common {
     }
 
     public static void loadNativeLibrary() {
+        System.err.println("---------------------------");
+        System.err.println("Loading liboqs for: " + Build.CPU_ABI);
+        System.err.println("---------------------------");
         System.loadLibrary("oqs");
         // System.loadLibrary("jni");
         /*

@@ -9,13 +9,13 @@ import java.util.ArrayList;
 public class KEMs {
     
     static {
-        de.hartz.software.parannoying.helper.security.liboqs.java.Common.loadNativeLibrary();
+        Common.loadNativeLibrary();
     }
 
     /**
      * The single KEMs class instance.
      */
-    private static de.hartz.software.parannoying.helper.security.liboqs.java.KEMs single_instance = null;
+    private static KEMs single_instance = null;
 
     private KEMs() {}
 
@@ -23,9 +23,9 @@ public class KEMs {
      * \brief Make sure that at most one instance is generated.
      * \return Singleton instance
      */
-    public static synchronized de.hartz.software.parannoying.helper.security.liboqs.java.KEMs get_instance() {
+    public static synchronized KEMs get_instance() {
         if (single_instance == null) {
-            single_instance = new de.hartz.software.parannoying.helper.security.liboqs.java.KEMs();
+            single_instance = new KEMs();
         }
         return single_instance; 
     }
