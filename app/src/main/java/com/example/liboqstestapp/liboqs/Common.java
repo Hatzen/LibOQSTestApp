@@ -24,7 +24,7 @@ public class Common {
 
     public static void loadNativeLibrary() {
         System.loadLibrary("oqs");
-        System.loadLibrary("jni");
+        // System.loadLibrary("jni");
         /*
         // If the library is in the java library path, load it directly. (e.g., -Djava.library.path=src/main/resources)
         try {

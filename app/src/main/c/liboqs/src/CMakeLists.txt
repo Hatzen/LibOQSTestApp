@@ -84,11 +84,46 @@ set_target_properties(oqs
     # For Windows DLLs
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-install(TARGETS oqs EXPORT liboqsConfig
+###
+#Added JNI
+###
+include_directories(jni)
+link_directories(jni oqs)
+
+add_library(jni SHARED
+jni/handle.c
+jni/KEMs.c
+jni/KeyEncapsulation.c
+jni/Rand.c
+jni/Signature.c
+jni/Sigs.c) # Probably shared is needed but leads to not finding oqs
+
+set_target_properties(
+    jni
+    PROPERTIES
+    COMPILE_FLAGS "-w -fPIC -O3"
+    #COMPILE_WARNING_DISABLED high
+)
+target_link_libraries(jni oqs)
+
+set_target_properties(jni PROPERTIES PUBLIC_HEADER "jni/handle.h;jni/KEMs.h;jni/KeyEncapsulation.h;jni/Rand.h;jni/Signature.h;jni/Sigs.h")
+
+INSTALL(TARGETS jni
+        LIBRARY DESTINATION lib
+        PUBLIC_HEADER DESTINATION lib
+)
+
+###
+
+install(TARGETS oqs jni EXPORT liboqsConfig
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
         RUNTIME DESTINATION bin
         INCLUDES DESTINATION include)
+
+###
+#End JNI
+###
 
 install(EXPORT liboqsConfig
         NAMESPACE OQS::
@@ -97,3 +132,4 @@ install(EXPORT liboqsConfig
 
 install(FILES ${PUBLIC_HEADERS}
         DESTINATION include/oqs)
+
