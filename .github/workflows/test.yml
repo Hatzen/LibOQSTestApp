@@ -39,7 +39,7 @@ jobs:
     strategy:
       matrix:
         api-level: [21]
-        arch: [x86_64] # x86 cannot be build be liboqs, but x86_64 is probably not possible with emulation..
+        arch: [x86_64]
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -50,4 +50,4 @@ jobs:
         with:
           api-level: ${{ matrix.api-level }}
           arch: ${{ matrix.arch }}
-          script: ./gradlew connectedCheck
+          script: ./gradlew connectedCheck --stacktrace --debug
