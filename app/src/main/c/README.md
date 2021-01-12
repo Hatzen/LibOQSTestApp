@@ -5,7 +5,7 @@ install from windows store.
 access via explorer: \\wsl$\Ubuntu-18.04
 
 # Setup env
-
+```shell
 pwd
 >/home/hatzen
 sudo su
@@ -20,16 +20,18 @@ apt-get install unzip
 unzip android-ndk-r21-linux-x86_64.zip
 apt-get install -y build-essential cmake libssl-dev    
 cd /home/hatzen/liboqs/liboqs/scripts     
-
+```
 
 # Checkout liboqs
 ## Old trials probably Outdated just checkout master
+```shell
 git clone --recursive -j8 -n https://github.com/open-quantum-safe/liboqs.git     
 // Version of android crosscompile theoretically working. Leads to JNI errors and test errors.
 // ALso tried faa7589e6f01c8d479462a45aa1cdeeb2667702d  but no chance with it.
 git checkout 1b9aecc65672f86487018ee6f9786216578e4e29  
 // 0.4.0 Version which cannot compile cause of aes_256 functions not found after getting fixed with 
 git checkout 9ed69af2c5c8923ea2674558dd1d37f5d498ee51
+```
 
 # Description
 
@@ -45,9 +47,11 @@ And changed the common.java#loadNativeLibs() to load it for only android.
 .CMake/alg_support.cmake
 To boost compile time only enable some of the algorithms via:
 
+```cmake
 option(OQS_ENABLE_KEM_KYBER "" ON)
 ...
 option(OQS_ENABLE_KEM_NEWHOPE "" OFF)
+```
 
 # Failing Tests
 https://github.com/open-quantum-safe/liboqs/wiki/Customizing-liboqs#oqs_build_only_lib
@@ -57,6 +61,8 @@ In android build script add:
 to just skip the tests..
 
 # ADD JNI
+
+```cmake
 src/CMakeList.txt
 ...
 include_directories(jni)
@@ -85,6 +91,7 @@ INSTALL(TARGETS jni
         PUBLIC_HEADER DESTINATION lib
 )
 ...
+```
 
 # Compiling
 For compiling for Y3 run:
