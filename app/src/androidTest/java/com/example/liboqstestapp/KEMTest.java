@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
-import java.util.stream.Stream;
+// import java.util.stream.Stream;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -72,8 +72,9 @@ public class KEMTest {
     /**
      * Method to convert the list of KEMs to a stream for input to testAllKEMs
      */
-    private static Stream<String> getEnabledKEMsAsStream() {
+    // Remove stream as 
+    /*private static Stream<String> getEnabledKEMsAsStream() {
         return enabled_kems.parallelStream();
-    }
+    }*/
 
 }
