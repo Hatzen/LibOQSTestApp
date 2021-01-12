@@ -96,7 +96,7 @@ jni/KEMs.c
 jni/KeyEncapsulation.c
 jni/Rand.c
 jni/Signature.c
-jni/Sigs.c) # Probably shared is needed but leads to not finding oqs
+jni/Sigs.c)
 
 set_target_properties(
     jni
