@@ -72,7 +72,7 @@ public class KEMTest {
     /**
      * Method to convert the list of KEMs to a stream for input to testAllKEMs
      */
-    // Remove stream as 
+    // Remove stream as
     /*private static Stream<String> getEnabledKEMsAsStream() {
         return enabled_kems.parallelStream();
     }*/

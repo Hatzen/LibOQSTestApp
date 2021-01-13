@@ -61,11 +61,40 @@ if(OQS_ENABLE_SIG_SPHINCS)
 endif()
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ADD_ALG_OBJECTS_END
 
+###
+#Added JNI
+###
+
+#add_subdirectory(jni)
+#set(SIG_OBJS ${SIG_OBJS} ${SPHINCS_OBJS})
+
+add_library(jni OBJECT 
+jni/handle.c
+jni/KEMs.c
+jni/KeyEncapsulation.c
+jni/Rand.c
+jni/Signature.c
+jni/Sigs.c)
+
+set_target_properties(jni 
+	PROPERTIES
+	PUBLIC_HEADER "jni/handle.h;jni/KEMs.h;jni/KeyEncapsulation.h;jni/Rand.h;jni/Signature.h;jni/Sigs.h"
+	COMPILE_FLAGS "-w -fPIC -O3"
+	)
+
+set(_JNI_OBJS $<TARGET_OBJECTS:jni>)
+
+
 add_library(oqs kem/kem.c
                 ${KEM_OBJS}
                 sig/sig.c
                 ${SIG_OBJS}
-                ${COMMON_OBJS})
+                ${COMMON_OBJS}
+				${_JNI_OBJS})
+				
+###
+#End JNI
+###
 set(COMMON_OBJS ${COMMON_OBJS} PARENT_SCOPE)
 if(DEFINED SANITIZER_LD_FLAGS)
     target_link_libraries(oqs PUBLIC ${SANITIZER_LD_FLAGS})
@@ -81,49 +110,19 @@ set_target_properties(oqs
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
     VERSION ${OQS_VERSION_TEXT}
     SOVERSION 0
+	PUBLIC_HEADER "jni/handle.h;jni/KEMs.h;jni/KeyEncapsulation.h;jni/Rand.h;jni/Signature.h;jni/Sigs.h"
+	COMPILE_FLAGS "-w -fPIC -O3"
     # For Windows DLLs
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-###
-#Added JNI
-###
-include_directories(jni)
-link_directories(jni oqs)
 
-add_library(jni SHARED
-jni/handle.c
-jni/KEMs.c
-jni/KeyEncapsulation.c
-jni/Rand.c
-jni/Signature.c
-jni/Sigs.c)
-
-set_target_properties(
-    jni
-    PROPERTIES
-    COMPILE_FLAGS "-w -fPIC -O3"
-    #COMPILE_WARNING_DISABLED high
-)
-target_link_libraries(jni oqs)
-
-set_target_properties(jni PROPERTIES PUBLIC_HEADER "jni/handle.h;jni/KEMs.h;jni/KeyEncapsulation.h;jni/Rand.h;jni/Signature.h;jni/Sigs.h")
-
-INSTALL(TARGETS jni
-        LIBRARY DESTINATION lib
-        PUBLIC_HEADER DESTINATION lib
-)
-
-###
-
-install(TARGETS oqs jni EXPORT liboqsConfig
+install(TARGETS oqs EXPORT liboqsConfig
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib
         RUNTIME DESTINATION bin
         INCLUDES DESTINATION include)
 
-###
-#End JNI
-###
+
 
 install(EXPORT liboqsConfig
         NAMESPACE OQS::
