@@ -51,5 +51,5 @@ jobs:
           api-level: ${{ matrix.api-level }}
           arch: ${{ matrix.arch }}
           script: ./gradlew connectedCheck
-      - Name: Output Crash
+      - name: Output Crash
         run: cat file:///Users/runner/work/LibOQSTestApp/LibOQSTestApp/app/build/reports/androidTests/connected/flavors/debugAndroidTest/index.html
