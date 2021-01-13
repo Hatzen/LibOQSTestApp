@@ -52,4 +52,4 @@ jobs:
           arch: ${{ matrix.arch }}
           script: ./gradlew connectedCheck
       - name: Output Crash
-        run: cat file:///Users/runner/work/LibOQSTestApp/LibOQSTestApp/app/build/reports/androidTests/connected/flavors/debugAndroidTest/index.html
+        run: cat app/build/reports/androidTests/connected/flavors/debugAndroidTest/index.html
