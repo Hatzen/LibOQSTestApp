@@ -12,6 +12,7 @@ adb logcat *:E -v color &
 if ./gradlew connectedCheck; then
   echo "connectedDebugAndroidTest succeeded" >&2
 else
-  cat app/build/reports/androidTests/connected/flavors/debugAndroidTest/index.html
+  adb logcat -d
+  # cat app/build/reports/androidTests/connected/flavors/debugAndroidTest/index.html
   exit 1
 fi
