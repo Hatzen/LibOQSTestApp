@@ -2,6 +2,8 @@ name: Test Liboqs on Android
 
 on:
   push:
+    branches:
+      - master
 
 jobs:
   UnitTest:
@@ -50,6 +52,4 @@ jobs:
         with:
           api-level: ${{ matrix.api-level }}
           arch: ${{ matrix.arch }}
-          script: ./gradlew connectedCheck
-      - name: Output Crash
-        run: cat app/build/reports/androidTests/connected/flavors/debugAndroidTest/index.html
+          script: bash .github/logTest.sh
