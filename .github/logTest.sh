@@ -9,7 +9,7 @@
 
 #adb logcat -c
 #adb logcat *:E -v color &
-adb logcat -v brief output # -d
+#adb logcat -v brief output # leads to endless loop?  
 if ./gradlew connectedCheck; then
   echo "connectedDebugAndroidTest succeeded" >&2
 else
