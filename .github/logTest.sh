@@ -7,12 +7,13 @@
 
 # News Task from: https://github.com/kiwix/kiwix-android/blob/develop/contrib/instrumentation_nightly.sh
 
-adb logcat -c
-adb logcat *:E -v color &
+#adb logcat -c
+#adb logcat *:E -v color &
+adb logcat -v brief output # -d
 if ./gradlew connectedCheck; then
   echo "connectedDebugAndroidTest succeeded" >&2
 else
-  adb logcat -v brief output # -d
+  adb logcat -d
   # cat app/build/reports/androidTests/connected/flavors/debugAndroidTest/index.html
   exit 1
 fi
