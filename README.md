@@ -1,3 +1,6 @@
+# This is just a testcase repository. Currently the integration on Liboqs is not working!
+But i need you to get it working :)
+
 # LibOQSTestApp
 
 Repository to test https://github.com/open-quantum-safe/liboqs with https://github.com/open-quantum-safe/liboqs-java for a android app only build.  
