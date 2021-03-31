@@ -28,7 +28,7 @@ public class Common {
         System.err.println("---------------------------");
         System.err.println("Loading liboqs for: " + Build.CPU_ABI);
         System.err.println("---------------------------");
-        System.loadLibrary("oqs");
+        // System.loadLibrary("oqs");
         // The jni file was just created in the (wrong) build/src/ folder.. The following t odo is obsolet // TODO: libjni.so is not created by current cmake file. I cannot remember how it was created. Maybe the liboqs cmake file changed and isnt compatible anymore. BUT i cannot find it on the backups ive made so probably not..
         System.loadLibrary("jni");
         /*

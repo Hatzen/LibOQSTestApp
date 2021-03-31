@@ -5,6 +5,8 @@ plugins {
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
+    ndkVersion '21.2.6472646'
+
 
     defaultConfig {
         applicationId "com.example.liboqstestapp"
@@ -26,9 +28,37 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    externalNativeBuild {
+        ndk {
+            path "Android.mk"
+        }
+    }
+
+    flavorDimensions 'cpuArch'
+    productFlavors {
+        arm8 {
+            dimension 'cpuArch'
+            ndk {
+                abiFilters 'arm64-v8a', 'armeabi-v7a'
+            }
+        }
+        x86_64 {
+            dimension 'cpuArch'
+            ndk {
+                abiFilters 'x86_64', 'x86'
+            }
+        }
+        universal {
+            dimension 'cpuArch'
+            // include all default ABIs. with NDK-r16,  it is:
+            //   armeabi-v7a, arm64-v8a, x86, x86_64
+        }
     }
 }
 
