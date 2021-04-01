@@ -12,7 +12,7 @@ extern "C" {
  * Method:    create_sig_new
  * Signature: (Ljava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_Signature_create_1sig_1new
+JNIEXPORT void JNICALL Java_com_example_liboqs_Signature_create_1sig_1new
   (JNIEnv *, jobject, jstring);
 
 /*
@@ -20,7 +20,7 @@ JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_Signature_create_1s
  * Method:    free_sig
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_Signature_free_1sig
+JNIEXPORT void JNICALL Java_com_example_liboqs_Signature_free_1sig
   (JNIEnv *, jobject);
 
 /*
@@ -28,7 +28,7 @@ JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_Signature_free_1sig
  * Method:    get_sig_details
  * Signature: ()Lcom/example/liboqstestapp/liboqs/Signature/SignatureDetails;
  */
-JNIEXPORT jobject JNICALL Java_com_example_liboqstestapp_liboqs_Signature_get_1sig_1details
+JNIEXPORT jobject JNICALL Java_com_example_liboqs_Signature_get_1sig_1details
   (JNIEnv *, jobject);
 
 /*
@@ -36,7 +36,7 @@ JNIEXPORT jobject JNICALL Java_com_example_liboqstestapp_liboqs_Signature_get_1s
  * Method:    generate_keypair
  * Signature: ([B[B)I
  */
-JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_Signature_generate_1keypair
+JNIEXPORT jint JNICALL Java_com_example_liboqs_Signature_generate_1keypair
   (JNIEnv *, jobject, jbyteArray, jbyteArray);
 
 /*
@@ -44,7 +44,7 @@ JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_Signature_generate_
  * Method:    import_secret_key
  * Signature: ([B)V
  */
-JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_Signature_import_1secret_1key
+JNIEXPORT void JNICALL Java_com_example_liboqs_Signature_import_1secret_1key
   (JNIEnv *, jobject, jbyteArray);
 
 /*
@@ -52,7 +52,7 @@ JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_Signature_import_1s
  * Method:    export_public_key
  * Signature: ([B)V
  */
-JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_Signature_export_1public_1key
+JNIEXPORT void JNICALL Java_com_example_liboqs_Signature_export_1public_1key
   (JNIEnv *, jobject, jbyteArray);
 
 /*
@@ -60,7 +60,7 @@ JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_Signature_export_1p
  * Method:    export_secret_key
  * Signature: ([B)V
  */
-JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_Signature_export_1secret_1key
+JNIEXPORT void JNICALL Java_com_example_liboqs_Signature_export_1secret_1key
   (JNIEnv *, jobject, jbyteArray);
 
 /*
@@ -68,7 +68,7 @@ JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_Signature_export_1s
  * Method:    sign
  * Signature: ([BLjava/lang/Long;[BJ[B)I
  */
-JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_Signature_sign
+JNIEXPORT jint JNICALL Java_com_example_liboqs_Signature_sign
   (JNIEnv *, jobject, jbyteArray, jobject, jbyteArray, jlong, jbyteArray);
 
 /*
@@ -76,7 +76,7 @@ JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_Signature_sign
  * Method:    verify
  * Signature: ([BJ[BJ[B)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_example_liboqstestapp_liboqs_Signature_verify
+JNIEXPORT jboolean JNICALL Java_com_example_liboqs_Signature_verify
   (JNIEnv *, jobject, jbyteArray, jlong, jbyteArray, jlong, jbyteArray);
 
 #ifdef __cplusplus

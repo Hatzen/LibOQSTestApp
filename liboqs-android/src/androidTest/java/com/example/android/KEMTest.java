@@ -1,9 +1,9 @@
-package com.example.liboqs_android;
+package com.example.android;
 
-import com.example.liboqs_android.liboqs.KEMs;
-import com.example.liboqs_android.liboqs.KeyEncapsulation;
-import com.example.liboqs_android.liboqs.MechanismNotSupportedError;
-import com.example.liboqs_android.liboqs.Pair;
+import com.example.liboqs.KEMs;
+import com.example.liboqs.KeyEncapsulation;
+import com.example.liboqs.MechanismNotSupportedError;
+import com.example.liboqs.Pair;
 
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;

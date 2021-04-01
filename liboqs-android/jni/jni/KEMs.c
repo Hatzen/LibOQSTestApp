@@ -6,7 +6,7 @@
  * Method:    max_number_KEMs
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_KEMs_max_1number_1KEMs
+JNIEXPORT jint JNICALL Java_com_example_liboqs_KEMs_max_1number_1KEMs
   (JNIEnv *env, jclass cls)
 {
     return (jint) OQS_KEM_alg_count();
@@ -17,7 +17,7 @@ JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_KEMs_max_1number_1K
  * Method:    is_KEM_enabled
  * Signature: (Ljava/lang/String;)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_example_liboqstestapp_liboqs_KEMs_is_1KEM_1enabled
+JNIEXPORT jboolean JNICALL Java_com_example_liboqs_KEMs_is_1KEM_1enabled
   (JNIEnv *env, jclass cls, jstring java_str)
 {
 	const char *str_native = (*env)->GetStringUTFChars(env, java_str, 0);
@@ -31,7 +31,7 @@ JNIEXPORT jboolean JNICALL Java_com_example_liboqstestapp_liboqs_KEMs_is_1KEM_1e
  * Method:    get_KEM_name
  * Signature: (J)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_com_example_liboqstestapp_liboqs_KEMs_get_1KEM_1name
+JNIEXPORT jstring JNICALL Java_com_example_liboqs_KEMs_get_1KEM_1name
   (JNIEnv *env, jclass cls, jlong alg_id)
 {
     const char *str_native = OQS_KEM_alg_identifier((size_t) alg_id);

@@ -6,7 +6,7 @@
  * Method:    max_number_sigs
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_Sigs_max_1number_1sigs
+JNIEXPORT jint JNICALL Java_com_example_liboqs_Sigs_max_1number_1sigs
   (JNIEnv *env, jclass cls)
 {
     return (jint) OQS_SIG_alg_count();
@@ -17,7 +17,7 @@ JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_Sigs_max_1number_1s
  * Method:    is_sig_enabled
  * Signature: (Ljava/lang/String;)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_example_liboqstestapp_liboqs_Sigs_is_1sig_1enabled
+JNIEXPORT jboolean JNICALL Java_com_example_liboqs_Sigs_is_1sig_1enabled
   (JNIEnv *env, jclass cls, jstring jstr)
 {
     const char *str_native = (*env)->GetStringUTFChars(env, jstr, 0);
@@ -31,7 +31,7 @@ JNIEXPORT jboolean JNICALL Java_com_example_liboqstestapp_liboqs_Sigs_is_1sig_1e
  * Method:    get_sig_name
  * Signature: (J)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_com_example_liboqstestapp_liboqs_Sigs_get_1sig_1name
+JNIEXPORT jstring JNICALL Java_com_example_liboqs_Sigs_get_1sig_1name
   (JNIEnv *env, jclass cls, jlong alg_id)
 {
     const char *str_native = OQS_SIG_alg_identifier((size_t) alg_id);

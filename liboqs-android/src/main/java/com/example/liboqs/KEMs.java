@@ -1,4 +1,4 @@
-package com.example.liboqs_android.liboqs;
+package com.example.liboqs;
 
 import java.util.ArrayList;
 

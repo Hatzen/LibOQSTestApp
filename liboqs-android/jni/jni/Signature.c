@@ -7,7 +7,7 @@
  * Method:    create_sig_new
  * Signature: (Ljava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_Signature_create_1sig_1new
+JNIEXPORT void JNICALL Java_com_example_liboqs_Signature_create_1sig_1new
   (JNIEnv *env, jobject obj, jstring jstr)
 {
     // Create get a liboqs::OQS_SIG pointer
@@ -23,7 +23,7 @@ JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_Signature_create_1s
  * Method:    free_sig
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_Signature_free_1sig
+JNIEXPORT void JNICALL Java_com_example_liboqs_Signature_free_1sig
   (JNIEnv *env, jobject obj)
 {
     OQS_SIG *sig = (OQS_SIG *) getHandle(env, obj, "native_sig_handle_");
@@ -35,7 +35,7 @@ JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_Signature_free_1sig
  * Method:    get_sig_details
  * Signature: ()Lcom/example/liboqstestapp/liboqs/Signature/SignatureDetails;
  */
-JNIEXPORT jobject JNICALL Java_com_example_liboqstestapp_liboqs_Signature_get_1sig_1details
+JNIEXPORT jobject JNICALL Java_com_example_liboqs_Signature_get_1sig_1details
   (JNIEnv *env, jobject obj)
 {
     jclass cls = (*env)->FindClass(env, "com/example/liboqstestapp/liboqs/Signature$SignatureDetails");
@@ -89,7 +89,7 @@ JNIEXPORT jobject JNICALL Java_com_example_liboqstestapp_liboqs_Signature_get_1s
  * Method:    generate_keypair
  * Signature: ([B[B)I
  */
-JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_Signature_generate_1keypair
+JNIEXPORT jint JNICALL Java_com_example_liboqs_Signature_generate_1keypair
   (JNIEnv *env, jobject obj, jbyteArray jpublic_key, jbyteArray jsecret_key)
 {
     jbyte *public_key_native = (*env)->GetByteArrayElements(env, jpublic_key, 0);
@@ -111,7 +111,7 @@ JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_Signature_generate_
  * Method:    sign
  * Signature: ([BLjava/lang/Long;[BJ[B)I
  */
-JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_Signature_sign
+JNIEXPORT jint JNICALL Java_com_example_liboqs_Signature_sign
   (JNIEnv * env, jobject obj, jbyteArray jsignature, jobject sig_len_obj,
       jbyteArray jmessage, jlong message_len, jbyteArray jsecret_key)
 {
@@ -152,7 +152,7 @@ JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_Signature_sign
  * Method:    verify
  * Signature: ([BJ[BJ[B)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_example_liboqstestapp_liboqs_Signature_verify
+JNIEXPORT jboolean JNICALL Java_com_example_liboqs_Signature_verify
   (JNIEnv *env, jobject obj, jbyteArray jmessage, jlong message_len,
       jbyteArray jsignature, jlong signature_len, jbyteArray jpublic_key)
 {

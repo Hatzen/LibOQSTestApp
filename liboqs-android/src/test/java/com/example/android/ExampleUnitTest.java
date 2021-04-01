@@ -1,4 +1,4 @@
-package com.example.liboqs_android;
+package com.example.android;
 
 import org.junit.Test;
 

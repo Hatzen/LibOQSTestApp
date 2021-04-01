@@ -6,7 +6,7 @@
  * Method:    randombytes
  * Signature: (J)[B
  */
-JNIEXPORT jbyteArray JNICALL Java_com_example_liboqstestapp_liboqs_Rand_randombytes
+JNIEXPORT jbyteArray JNICALL Java_com_example_liboqs_Rand_randombytes
   (JNIEnv *env, jclass cls, jlong bytes_to_read)
 {
     // create array that will be passed back to Java
@@ -33,7 +33,7 @@ JNIEXPORT jbyteArray JNICALL Java_com_example_liboqstestapp_liboqs_Rand_randomby
  * Method:    randombytes_switch_algorithm_native
  * Signature: (Ljava/lang/String;)I
  */
-JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_Rand_randombytes_1switch_1algorithm_1native
+JNIEXPORT jint JNICALL Java_com_example_liboqs_Rand_randombytes_1switch_1algorithm_1native
   (JNIEnv *env, jclass cls, jstring jstr)
 {
     const char *alg_name_native = (*env)->GetStringUTFChars(env, jstr, 0);
@@ -47,7 +47,7 @@ JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_Rand_randombytes_1s
  * Method:    randombytes_nist_kat_init
  * Signature: ([B[BJ)V
  */
-JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_Rand_randombytes_1nist_1kat_1init
+JNIEXPORT void JNICALL Java_com_example_liboqs_Rand_randombytes_1nist_1kat_1init
   (JNIEnv *env, jclass cls, jbyteArray jentropy_input, jbyteArray jpers_str, jlong pers_str_len)
 {
     jbyte *entropy_input_native = (*env)->GetByteArrayElements(env, jentropy_input, 0);

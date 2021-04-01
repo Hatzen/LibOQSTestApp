@@ -7,7 +7,7 @@
  * Method:    get_new_KEM
  * Signature: (Ljava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_create_1KEM_1new
+JNIEXPORT void JNICALL Java_com_example_liboqs_KeyEncapsulation_create_1KEM_1new
   (JNIEnv *env, jobject obj, jstring jstr)
 {
     // Create get a liboqs::OQS_KEM pointer
@@ -23,7 +23,7 @@ JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_cr
  * Method:    free_KEM
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_free_1KEM
+JNIEXPORT void JNICALL Java_com_example_liboqs_KeyEncapsulation_free_1KEM
   (JNIEnv *env, jobject obj)
 {
     OQS_KEM *kem = (OQS_KEM *) getHandle(env, obj, "native_kem_handle_");
@@ -35,7 +35,7 @@ JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_fr
  * Method:    get_KEM_details
  * Signature: ()Lcom/example/liboqstestapp/liboqs/KeyEncapsulation/KeyEncapsulationDetails;
  */
-JNIEXPORT jobject JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_get_1KEM_1details
+JNIEXPORT jobject JNICALL Java_com_example_liboqs_KeyEncapsulation_get_1KEM_1details
   (JNIEnv *env, jobject obj)
 {
     jclass cls = (*env)->FindClass(env, "com/example/liboqstestapp/liboqs/KeyEncapsulation$KeyEncapsulationDetails");
@@ -94,7 +94,7 @@ JNIEXPORT jobject JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation
  * Method:    generate_keypair
  * Signature: ([B[B)I
  */
-JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_generate_1keypair
+JNIEXPORT jint JNICALL Java_com_example_liboqs_KeyEncapsulation_generate_1keypair
   (JNIEnv *env, jobject obj, jbyteArray jpublic_key, jbyteArray jsecret_key)
 {
     jbyte *public_key_native = (*env)->GetByteArrayElements(env, jpublic_key, 0);
@@ -116,7 +116,7 @@ JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_ge
  * Method:    encap_secret
  * Signature: ([B[B[B)I
  */
-JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_encap_1secret
+JNIEXPORT jint JNICALL Java_com_example_liboqs_KeyEncapsulation_encap_1secret
   (JNIEnv *env, jobject obj, jbyteArray jciphertext, jbyteArray jshared_secret, jbyteArray jpublic_key)
 {
     // Convert public_key to jbyte array
@@ -140,7 +140,7 @@ JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_en
  * Method:    decap_secret
  * Signature: ([B[B[B)I
  */
-JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_decap_1secret
+JNIEXPORT jint JNICALL Java_com_example_liboqs_KeyEncapsulation_decap_1secret
   (JNIEnv *env, jobject obj, jbyteArray jshared_secret, jbyteArray jciphertext, jbyteArray jsecret_key)
 {
     jbyte *shared_secret_native = (*env)->GetByteArrayElements(env, jshared_secret, 0);

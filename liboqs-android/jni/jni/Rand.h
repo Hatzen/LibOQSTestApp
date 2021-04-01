@@ -12,7 +12,7 @@ extern "C" {
  * Method:    randombytes
  * Signature: (J)[B
  */
-JNIEXPORT jbyteArray JNICALL Java_com_example_liboqstestapp_liboqs_Rand_randombytes
+JNIEXPORT jbyteArray JNICALL Java_com_example_liboqs_Rand_randombytes
   (JNIEnv *, jclass, jlong);
 
 /*
@@ -20,7 +20,7 @@ JNIEXPORT jbyteArray JNICALL Java_com_example_liboqstestapp_liboqs_Rand_randomby
  * Method:    randombytes_switch_algorithm_native
  * Signature: (Ljava/lang/String;)I
  */
-JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_Rand_randombytes_1switch_1algorithm_1native
+JNIEXPORT jint JNICALL Java_com_example_liboqs_Rand_randombytes_1switch_1algorithm_1native
   (JNIEnv *, jclass, jstring);
 
 /*
@@ -28,7 +28,7 @@ JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_Rand_randombytes_1s
  * Method:    randombytes_nist_kat_init
  * Signature: ([B[BJ)V
  */
-JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_Rand_randombytes_1nist_1kat_1init
+JNIEXPORT void JNICALL Java_com_example_liboqs_Rand_randombytes_1nist_1kat_1init
   (JNIEnv *, jclass, jbyteArray, jbyteArray, jlong);
 
 #ifdef __cplusplus

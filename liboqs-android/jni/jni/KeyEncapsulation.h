@@ -13,7 +13,7 @@ extern "C" {
  * Method:    create_KEM_new
  * Signature: (Ljava/lang/String;)V
  */
-JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_create_1KEM_1new
+JNIEXPORT void JNICALL Java_com_example_liboqs_KeyEncapsulation_create_1KEM_1new
   (JNIEnv *, jobject, jstring);
 
 /*
@@ -21,7 +21,7 @@ JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_cr
  * Method:    free_KEM
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_free_1KEM
+JNIEXPORT void JNICALL Java_com_example_liboqs_KeyEncapsulation_free_1KEM
   (JNIEnv *, jobject);
 
 /*
@@ -29,7 +29,7 @@ JNIEXPORT void JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_fr
  * Method:    get_KEM_details
  * Signature: ()Lcom/example/liboqstestapp/liboqs/KeyEncapsulation/KeyEncapsulationDetails;
  */
-JNIEXPORT jobject JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_get_1KEM_1details
+JNIEXPORT jobject JNICALL Java_com_example_liboqs_KeyEncapsulation_get_1KEM_1details
   (JNIEnv *, jobject);
 
 /*
@@ -37,7 +37,7 @@ JNIEXPORT jobject JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation
  * Method:    generate_keypair
  * Signature: ([B[B)I
  */
-JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_generate_1keypair
+JNIEXPORT jint JNICALL Java_com_example_liboqs_KeyEncapsulation_generate_1keypair
   (JNIEnv *, jobject, jbyteArray, jbyteArray);
 
 /*
@@ -45,7 +45,7 @@ JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_ge
  * Method:    encap_secret
  * Signature: ([B[B[B)I
  */
-JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_encap_1secret
+JNIEXPORT jint JNICALL Java_com_example_liboqs_KeyEncapsulation_encap_1secret
   (JNIEnv *, jobject, jbyteArray, jbyteArray, jbyteArray);
 
 /*
@@ -53,7 +53,7 @@ JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_en
  * Method:    decap_secret
  * Signature: ([B[B[B)I
  */
-JNIEXPORT jint JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation_decap_1secret
+JNIEXPORT jint JNICALL Java_com_example_liboqs_KeyEncapsulation_decap_1secret
   (JNIEnv *, jobject, jbyteArray, jbyteArray, jbyteArray);
 
 #ifdef __cplusplus
