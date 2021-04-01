@@ -1,4 +1,4 @@
-package com.example.liboqstestapp.liboqs;
+package com.example.liboqs_android.liboqs;
 
 /**
  * \brief Class containing RNG-related functions

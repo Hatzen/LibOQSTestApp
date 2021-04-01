@@ -1,4 +1,4 @@
-package com.example.liboqstestapp.liboqs;
+package com.example.liboqs_android.liboqs;
 
 // https://stackoverflow.com/questions/521171/a-java-collection-of-value-pairs-tuples
 public class Pair<L, R> {

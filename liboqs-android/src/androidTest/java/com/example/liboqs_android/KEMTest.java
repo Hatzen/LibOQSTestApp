@@ -1,15 +1,12 @@
-package com.example.liboqstestapp;
+package com.example.liboqs_android;
 
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-
-import com.example.liboqstestapp.liboqs.KEMs;
-import com.example.liboqstestapp.liboqs.KeyEncapsulation;
-import com.example.liboqstestapp.liboqs.MechanismNotSupportedError;
-import com.example.liboqstestapp.liboqs.Pair;
+import com.example.liboqs_android.liboqs.KEMs;
+import com.example.liboqs_android.liboqs.KeyEncapsulation;
+import com.example.liboqs_android.liboqs.MechanismNotSupportedError;
+import com.example.liboqs_android.liboqs.Pair;
 
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.runner.RunWith;
@@ -18,7 +15,6 @@ import org.junit.runners.Parameterized;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
