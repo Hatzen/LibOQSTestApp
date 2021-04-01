@@ -1,9 +1,6 @@
-# This is just a testcase repository. Currently the integration on Liboqs is not working!
-But i need you to get it working :)
-
 # LibOQSTestApp
   
-![KemTest on Android x86_64](https://github.com/Hatzen/LibOQSTestApp/workflows/test/badge.svg?branch=master) 
+![KemTest on Android x86_64](https://github.com/Hatzen/LibOQSTestApp/workflows/Test%20Liboqs%20on%20Android/badge.svg?branch=master) 
 
 This app shows how to use liboqs on android devices. Usually you would use the openssl implementation but for end to end encryption using it locally may be useful.  
 
