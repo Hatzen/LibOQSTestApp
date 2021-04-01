@@ -17,9 +17,12 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        // https://developer.android.com/ndk/guides/abis#gc
         ndk {
-            // abiFilters 'arm64-v8a', 'x86_64' // Filter works but not supported on desktop emulator or yota3??
-            abiFilters 'armeabi-v7a'
+            // Only support 64 bit systems (as liboqs does not build others)
+            abiFilters 'arm64-v8a', 'x86_64'
+            // on desktop emulator (x86) it crashes as it doesnt find .so file
+            // yota3 (arm64-v8a) it crashes as it does not find fatal error: 'oqs/oqs.h' file not found
         }
     }
 

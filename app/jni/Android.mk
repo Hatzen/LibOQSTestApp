@@ -12,7 +12,7 @@ include $(PREBUILT_SHARED_LIBRARY)
 # Create jni wrapper.
 include $(CLEAR_VARS)
 LOCAL_MODULE     := oqs-jni
-# LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_CFLAGS     += -Wall
 LOCAL_SRC_FILES := $(LOCAL_PATH)/jni/handle.c $(LOCAL_PATH)/jni/KEMs.c  $(LOCAL_PATH)/jni/KeyEncapsulation.c  $(LOCAL_PATH)/jni/Rand.c  $(LOCAL_PATH)/jni/Signature.c  $(LOCAL_PATH)/jni/Sigs.c
 LOCAL_LDLIBS    := -llog -landroid

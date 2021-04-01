@@ -1,6 +1,7 @@
 package com.example.liboqstestapp;
 
 import android.content.Context;
+import android.os.Build;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -22,5 +23,10 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.example.liboqstestapp", appContext.getPackageName());
+
+        System.err.println("---------------------------");
+        System.err.println("Loading liboqs for: " + Build.CPU_ABI);
+        System.err.println("---------------------------");
+        assertEquals("arm", Build.CPU_ABI);
     }
 }
