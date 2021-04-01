@@ -28,38 +28,7 @@ public class Common {
         System.err.println("---------------------------");
         System.err.println("Loading liboqs for: " + Build.CPU_ABI);
         System.err.println("---------------------------");
-        System.loadLibrary("oqs");
-        // The jni file was just created in the (wrong) build/src/ folder.. The following t odo is obsolet // TODO: libjni.so is not created by current cmake file. I cannot remember how it was created. Maybe the liboqs cmake file changed and isnt compatible anymore. BUT i cannot find it on the backups ive made so probably not..
-        System.loadLibrary("jni");
-        /*
-        // If the library is in the java library path, load it directly. (e.g., -Djava.library.path=src/main/resources)
-        try {
-            System.loadLibrary("oqs-jni");
-        // Otherwise load the library from the liboqs-java.jar
-        } catch (UnsatisfiedLinkError e) {
-            String libName = "llliboqs-jni.so";
-            if (Common.isLinux()) {
-                libName = "liboqs-jni.so";
-            } else if (Common.isMac()) {
-                libName = "liboqs-jni.jnilib";
-            } else if (Common.isWindows()) {
-                libName = "oqs-jni.dll";
-            }
-            URL url = KEMs.class.getResource("/" + libName);
-            File tmpDir;
-            try {
-                tmpDir = Files.createTempDirectory("oqs-native-lib").toFile();
-                tmpDir.deleteOnExit();
-                File nativeLibTmpFile = new File(tmpDir, libName);
-                nativeLibTmpFile.deleteOnExit();
-                InputStream in = url.openStream();
-                Files.copy(in, nativeLibTmpFile.toPath());
-                System.load(nativeLibTmpFile.getAbsolutePath());
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-        }
-        */
+        System.loadLibrary("oqs-jni");
     }
 
     public static <E, T extends Iterable<E>> void print_list(T list) {

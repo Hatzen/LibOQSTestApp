@@ -5,6 +5,8 @@ plugins {
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
+    ndkVersion '21.2.6472646'
+
 
     defaultConfig {
         applicationId "com.example.liboqstestapp"
@@ -14,6 +16,14 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // https://developer.android.com/ndk/guides/abis#gc
+        ndk {
+            // Only support 64 bit systems (as liboqs does not build others)
+            abiFilters 'arm64-v8a', 'x86_64'
+            // on desktop emulator (x86) it crashes as it doesnt find .so file
+            // yota3 (arm64-v8a) it crashes as it does not find fatal error: 'oqs/oqs.h' file not found
+        }
     }
 
     buildTypes {
@@ -26,9 +36,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    externalNativeBuild {
+        ndkBuild {
+            // Tells Gradle to put outputs from external native
+            // builds in the path specified below.
+            buildStagingDirectory "./outputs/ndk-build"
+            path 'jni/Android.mk'
+            // Verbose: https://stackoverflow.com/a/44578257/8524651
+        }
     }
 }
 
