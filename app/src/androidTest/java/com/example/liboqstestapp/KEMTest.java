@@ -13,24 +13,31 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-@RunWith(AndroidJUnit4.class)
+@RunWith(Parameterized.class)
 public class KEMTest {
 
-    private static ArrayList<String> enabled_kems;
+    @Parameterized.Parameter(value = 0)
+    public String kem_name;
 
     /**
-     * Before running the tests, get a list of enabled KEMs
+     * Method to convert the list of KEMs to a stream for input to testAllKEMs
      */
-    @BeforeAll
-    public static void init(){
+    @Parameterized.Parameters
+    public static List<Object> getEnabledKEMsAsStream() {
         System.out.println("Initialize list of enabled KEMs");
-        enabled_kems = KEMs.get_enabled_KEMs();
+        ArrayList<String> enabled_kems = KEMs.get_enabled_KEMs();
+        return enabled_kems.parallelStream().map(e ->
+            new Object[] { e }
+        ).collect(Collectors.toList());
     }
 
     /**
@@ -38,7 +45,7 @@ public class KEMTest {
      */
     @ParameterizedTest(name = "Testing {arguments}")
     @MethodSource("getEnabledKEMsAsStream")
-    public void testAllKEMs(String kem_name) {
+    public void testAllKEMs() {
         StringBuilder sb = new StringBuilder();
         sb.append(kem_name);
         sb.append(String.format("%1$" + (40 - kem_name.length()) + "s", ""));
@@ -73,13 +80,4 @@ public class KEMTest {
     public void testUnsupportedKEMExpectedException() {
         Assertions.assertThrows(MechanismNotSupportedError.class, () -> new KeyEncapsulation("MechanismNotSupported"));
     }
-
-    /**
-     * Method to convert the list of KEMs to a stream for input to testAllKEMs
-     */
-    private static Stream<String> getEnabledKEMsAsStream() {
-        return enabled_kems.stream();
-                // .parallelStream();
-    }
-
 }
