@@ -36,7 +36,11 @@ android {
 
     externalNativeBuild {
         ndkBuild {
+            // Tells Gradle to put outputs from external native
+            // builds in the path specified below.
+            buildStagingDirectory "./outputs/ndk-build"
             path 'jni/Android.mk'
+            // Verbose: https://stackoverflow.com/a/44578257/8524651
         }
     }
 }
