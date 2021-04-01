@@ -42,11 +42,12 @@ JNIEXPORT jobject JNICALL Java_com_example_liboqstestapp_liboqs_KeyEncapsulation
     if (cls == NULL) { fprintf(stderr, "\nCould not find class\n"); return NULL; }
 
     // Get the Method ID of the constructor
+    // jmethodID constructor_meth_id_ = (*env)->GetMethodID(env, cls, "<init>", "(Lcom/example/liboqstestapp/liboqs/KeyEncapsulation;)V");
     jmethodID constructor_meth_id_ = (*env)->GetMethodID(env, cls, "<init>", "(Lcom/example/liboqstestapp/liboqs/KeyEncapsulation;)V");
     if (NULL == constructor_meth_id_) { fprintf(stderr, "\nCould not initialize class\n"); return NULL; }
 
     // Call back constructor to allocate a new instance, with an int argument
-    jobject _nativeKED = (*env)->NewObject(env, cls, constructor_meth_id_);
+    jobject _nativeKED = (*env)->NewObject(env, cls, constructor_meth_id_, obj); // TODO: This line seems to be suspicous.
 
     OQS_KEM *kem = (OQS_KEM *) getHandle(env, obj, "native_kem_handle_");
 
