@@ -7,7 +7,6 @@ android {
     buildToolsVersion "30.0.0"
     ndkVersion '21.2.6472646'
 
-
     defaultConfig {
         applicationId "com.example.liboqstestapp"
         minSdkVersion 16
@@ -16,23 +15,11 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        // https://developer.android.com/ndk/guides/abis#gc
-        ndk {
-            // Only support 64 bit systems (as liboqs does not build others)
-            abiFilters 'arm64-v8a', 'x86_64'
-            // on desktop emulator (x86) it crashes as it doesnt find .so file
-            // yota3 (arm64-v8a) it crashes as it does not find fatal error: 'oqs/oqs.h' file not found
-        }
     }
 
     buildTypes {
         debug {
-            debuggable true
-            jniDebuggable true
-            zipAlignEnabled true
             minifyEnabled false
-            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
         }
     }
@@ -41,24 +28,17 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    externalNativeBuild {
-        ndkBuild {
-            // Tells Gradle to put outputs from external native
-            // builds in the path specified below.
-            buildStagingDirectory "./outputs/ndk-build"
-            path 'jni/Android.mk'
-            // Verbose: https://stackoverflow.com/a/44578257/8524651
-        }
-    }
 }
 
 dependencies {
-
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation project(path: ':liboqs-android')
+
+    testImplementation 'junit:junit:4.13.2'
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
