@@ -12,3 +12,7 @@ There seems to be an issue (or further configuration) with compiling for 32 Bit 
 The jni files (https://github.com/Hatzen/LibOQSTestApp/tree/master/app/jni/jni) are slightly modified (package name changes and a minor fix) to compile successfully. 
 
 The example app is currently just a mockup without functionality. 
+
+## TODOs
+ - [ ] Setup CI to use newest versions of jni and liboqs
+ - [ ] Implement example app mock up
