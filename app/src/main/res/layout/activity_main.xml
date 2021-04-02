@@ -17,11 +17,13 @@
         android:layout_marginBottom="30dp">
         <com.google.android.material.tabs.TabItem
             android:text="Client1"
+            android:id="@+id/tab1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <com.google.android.material.tabs.TabItem
             android:text="Client2"
+            android:id="@+id/tab2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </com.google.android.material.tabs.TabLayout>
@@ -46,20 +48,21 @@
                 android:layout_height="50dp"/>
 
             <TextView
-                android:text="Generated Public key:"
+                android:text="Generated shared secret:"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:textSize="18sp"
                 android:layout_marginBottom="10dp"/>
             <EditText
+                android:id="@+id/keyText"
                 android:editable="false"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"/>
 
             <TextView
-                android:text="Enter a shared secret (usually the generated key. In this example generic text):"
+                android:text="Enter message:"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="30dp"
                 android:textSize="18sp"
                 android:layout_marginBottom="10dp"/>
             <EditText
