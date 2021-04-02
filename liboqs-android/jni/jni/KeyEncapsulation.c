@@ -33,16 +33,16 @@ JNIEXPORT void JNICALL Java_com_example_liboqs_KeyEncapsulation_free_1KEM
 /*
  * Class:     org_openquantumsafe_KeyEncapsulation
  * Method:    get_KEM_details
- * Signature: ()Lcom/example/liboqstestapp/liboqs/KeyEncapsulation/KeyEncapsulationDetails;
+ * Signature: ()Lcom/example/liboqs/KeyEncapsulation/KeyEncapsulationDetails;
  */
 JNIEXPORT jobject JNICALL Java_com_example_liboqs_KeyEncapsulation_get_1KEM_1details
   (JNIEnv *env, jobject obj)
 {
-    jclass cls = (*env)->FindClass(env, "com/example/liboqstestapp/liboqs/KeyEncapsulation$KeyEncapsulationDetails");
+    jclass cls = (*env)->FindClass(env, "com/example/liboqs/KeyEncapsulation$KeyEncapsulationDetails");
     if (cls == NULL) { fprintf(stderr, "\nCould not find class\n"); return NULL; }
 
     // Get the Method ID of the constructor
-    jmethodID constructor_meth_id_ = (*env)->GetMethodID(env, cls, "<init>", "(Lcom/example/liboqstestapp/liboqs/KeyEncapsulation;)V");
+    jmethodID constructor_meth_id_ = (*env)->GetMethodID(env, cls, "<init>", "(Lcom/example/liboqs/KeyEncapsulation;)V");
     if (NULL == constructor_meth_id_) { fprintf(stderr, "\nCould not initialize class\n"); return NULL; }
 
     // Call back constructor to allocate a new instance, with an int argument

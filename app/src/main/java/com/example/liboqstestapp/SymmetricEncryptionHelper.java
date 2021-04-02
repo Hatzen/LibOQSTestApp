@@ -1,5 +1,11 @@
 package com.example.liboqstestapp;
 
+import android.util.Base64;
+
+import com.example.liboqs.Common;
+
+import java.nio.charset.Charset;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -28,15 +34,14 @@ public class SymmetricEncryptionHelper {
         secretKeySpec = new SecretKeySpec(aesKey, AES_ALGORITHM);
     }
 
-
     public String decrypt(String text) {
         try {
             Cipher cipher = Cipher.getInstance(AES_ALGORITHM);
             cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivSpec);
-            byte[] decryptedBytes = cipher.doFinal(text.getBytes());
-            return new String(decryptedBytes);
+            byte[] decryptedBytes = cipher.doFinal(Base64.decode(text, Base64.DEFAULT));
+            return new String(decryptedBytes, "UTF-8");
         } catch (Exception e) {
-            throw new RuntimeException("Something went wrong.");
+            throw new RuntimeException("Something went wrong.", e);
         }
     }
 
@@ -45,9 +50,9 @@ public class SymmetricEncryptionHelper {
             Cipher cipher = Cipher.getInstance(AES_ALGORITHM);
             cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivSpec);
             byte[] encrypted  = cipher.doFinal(text.getBytes());
-            return new String(encrypted);
+            return new String(Base64.encode(encrypted, Base64.DEFAULT), "UTF-8");
         } catch (Exception e) {
-            throw new RuntimeException("Something went wrong.");
+            throw new RuntimeException("Something went wrong.", e);
         }
     }
 }

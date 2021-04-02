@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.example.liboqs.Common;
 import com.example.liboqs.KEMs;
 import com.example.liboqs.KeyEncapsulation;
 import com.example.liboqs.Pair;
@@ -59,17 +60,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void initCipher (int position) {
         String cipher = algorithmNames[position];
-        // TODO: Caused by: java.lang.ClassNotFoundException: Didn't find class "com.example.liboqstestapp.liboqs.KeyEncapsulation$KeyEncapsulationDetails" on path
         client1.kem = new KeyEncapsulation(cipher);
         client2.kem = new KeyEncapsulation(cipher);
 
         byte[] publicKeyClient1 = client1.kem.generate_keypair();
 
         Pair<byte[], byte[]> sharedSecretEncryptedAndPlainText = client2.kem.encap_secret(publicKeyClient1);
-        client2.sharedSecret = new String(sharedSecretEncryptedAndPlainText.getRight());
+        client2.sharedSecret = Common.to_hex(sharedSecretEncryptedAndPlainText.getRight())
+                .substring(0, 16);
 
         byte[] sharedSecretPlain = client1.kem.decap_secret(sharedSecretEncryptedAndPlainText.getLeft());
-        client1.sharedSecret = new String(sharedSecretPlain);
+        client1.sharedSecret = Common.to_hex(sharedSecretPlain)
+            .substring(0, 16);
     }
 
     private void updateScreen (Client otherClient) {
@@ -80,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
         encryptedTextField.setText(encrypted);
 
         encrypted = otherClient.encryptedText;
+        if (encrypted == null || "".equals(encrypted)) {
+            return;
+        }
         plainText = SymmetricEncryptionHelper.useDefaultIv(currentClient.sharedSecret).decrypt(encrypted);
         decryptedTextField.setText(plainText);
     }
@@ -111,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
                 Client otherClient = getOtherClient();
                 updateScreen(otherClient);
-                currentClient.encryptedText = encryptedTextField.getText().toString();
             }
         });
         encryptedTextField = findViewById(R.id.outputText);
@@ -121,8 +125,16 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                currentClient.encryptedText = encryptedTextField.getText().toString();
+                
+                keyTextField.setText("");
+                plainTextField.setText("");
+                encryptedTextField.setText("");
+                decryptedTextField.setText("");
+
+                Client otherClient = currentClient;
                 currentClient = getOtherClient();
-                updateScreen(getOtherClient());
+                updateScreen(otherClient);
             }
 
             @Override

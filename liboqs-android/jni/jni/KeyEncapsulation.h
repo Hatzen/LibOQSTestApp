@@ -27,7 +27,7 @@ JNIEXPORT void JNICALL Java_com_example_liboqs_KeyEncapsulation_free_1KEM
 /*
  * Class:     org_openquantumsafe_KeyEncapsulation
  * Method:    get_KEM_details
- * Signature: ()Lcom/example/liboqstestapp/liboqs/KeyEncapsulation/KeyEncapsulationDetails;
+ * Signature: ()Lcom/example/liboqs/KeyEncapsulation/KeyEncapsulationDetails;
  */
 JNIEXPORT jobject JNICALL Java_com_example_liboqs_KeyEncapsulation_get_1KEM_1details
   (JNIEnv *, jobject);

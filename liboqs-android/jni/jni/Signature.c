@@ -33,16 +33,16 @@ JNIEXPORT void JNICALL Java_com_example_liboqs_Signature_free_1sig
 /*
  * Class:     org_openquantumsafe_Signature
  * Method:    get_sig_details
- * Signature: ()Lcom/example/liboqstestapp/liboqs/Signature/SignatureDetails;
+ * Signature: ()Lcom/example/liboqs/Signature/SignatureDetails;
  */
 JNIEXPORT jobject JNICALL Java_com_example_liboqs_Signature_get_1sig_1details
   (JNIEnv *env, jobject obj)
 {
-    jclass cls = (*env)->FindClass(env, "com/example/liboqstestapp/liboqs/Signature$SignatureDetails");
+    jclass cls = (*env)->FindClass(env, "com/example/liboqs/Signature$SignatureDetails");
     if (cls == NULL) { fprintf(stderr, "\nCould not find class\n"); return NULL; }
 
     // Get the Method ID of the constructor
-    jmethodID constructor_meth_id_ = (*env)->GetMethodID(env, cls, "<init>", "(Lcom/example/liboqstestapp/liboqs/Signature;)V");
+    jmethodID constructor_meth_id_ = (*env)->GetMethodID(env, cls, "<init>", "(Lcom/example/liboqs/Signature;)V");
     if (NULL == constructor_meth_id_) { fprintf(stderr, "\nCould not initialize class\n"); return NULL; }
 
     // Call back constructor to allocate a new instance, with an int argument

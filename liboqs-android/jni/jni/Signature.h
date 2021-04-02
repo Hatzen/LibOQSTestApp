@@ -26,7 +26,7 @@ JNIEXPORT void JNICALL Java_com_example_liboqs_Signature_free_1sig
 /*
  * Class:     org_openquantumsafe_Signature
  * Method:    get_sig_details
- * Signature: ()Lcom/example/liboqstestapp/liboqs/Signature/SignatureDetails;
+ * Signature: ()Lcom/example/liboqs/Signature/SignatureDetails;
  */
 JNIEXPORT jobject JNICALL Java_com_example_liboqs_Signature_get_1sig_1details
   (JNIEnv *, jobject);
