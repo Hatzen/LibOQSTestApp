@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,9 +32,13 @@ public class KEMTest {
     public static List<Object> getEnabledKEMsAsStream() {
         System.out.println("Initialize list of enabled KEMs");
         ArrayList<String> enabled_kems = KEMs.get_enabled_KEMs();
-        return enabled_kems.parallelStream().map(e ->
-            new Object[] { e }
-        ).collect(Collectors.toList());
+
+        // Do not use java streams as they are only supported on Android Nougat (7.0 = SDK 24) and above.
+        List<Object> parameters = new ArrayList<>();
+        for (String kemName: enabled_kems) {
+            parameters.add( new Object[] { kemName });
+        }
+        return parameters;
     }
 
     /**
