@@ -18,4 +18,3 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/jni/handle.c $(LOCAL_PATH)/jni/KEMs.c  $(LOCAL_
 LOCAL_LDLIBS    := -llog -landroid
 LOCAL_SHARED_LIBRARIES := oqs
 include $(BUILD_SHARED_LIBRARY)
-
