@@ -15,4 +15,3 @@ The example app is currently just a mockup without functionality.
 
 ## TODOs
  - [ ] Setup CI to use newest versions of jni and liboqs
- - [ ] Implement example app mock up
