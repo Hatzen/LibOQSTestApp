@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.library'
+    id 'org.ajoberstar.grgit' version '4.0.2' apply false
 }
+import org.ajoberstar.grgit.Grgit
+
 
 android {
     compileSdkVersion 30
@@ -17,7 +20,7 @@ android {
 
         // https://developer.android.com/ndk/guides/abis#gc
         ndk {
-            // Only support 64 bit systems (as liboqs does not build others)
+            // Only support 64 bit systems (as liboqs does not build others yet #2 and #3)
             abiFilters 'arm64-v8a', 'x86_64'
         }
     }
@@ -39,7 +42,7 @@ android {
 
     externalNativeBuild {
         ndkBuild {
-            // Tells Gradle to put outputs from external native
+            // Tells Gradle to put outputs/logs from external native
             // builds in the path specified below.
             buildStagingDirectory "./outputs/ndk-build"
             path 'jni/Android.mk'
@@ -64,4 +67,64 @@ dependencies {
     androidTestImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
+
+// maybe use $projectDir ?
+def prebuiltRoot = 'prebuild-liboqs'
+def liboqsScriptsDir = "$prebuiltRoot/liboqs/scripts"
+def liboqsBuildDir = "$prebuiltRoot/liboqs/build"
+def ndkPath = "$prebuiltRoot/android-ndk-r21"
+def jniLibDir = "jni/jniLibs"
+
+tasks.register('cloneLiboqs') {
+    // https://stackoverflow.com/a/24195891/8524651
+    Grgit.clone(dir: file("$prebuiltRoot/liboqs"), uri: 'git@github.com:open-quantum-safe/liboqs.git')
+}
+
+tasks.register('initEnv') {
+    // workingDir prebuiltRoot
+    'apt-get update'
+    'wget https://dl.google.com/android/repository/android-ndk-r21-linux-x86_64.zip '
+    'apt-get install unzip'
+    'unzip android-ndk-r21-linux-x86_64.zip'
+    'apt-get install -y build-essential cmake libssl-dev'
+}
+
+tasks.register('buildAllLibs') {
+    doLast {
+        if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+            System.err.println("Need unix system for compiling prebuild liboqs.so files")
+        }
+        dependsOn 'cloneLiboqs'
+        // workingDir $liboqsScriptsDir
+        // workingDir "$projectDir"
+
+        def sdkVersion = 19
+        def abis = ['x86', 'x86_64', 'arm64-v8a', 'armeabi-v7a']
+        abis.each { abi ->
+            System.out.println("Start Build for abi $abi")
+            def logFile = file("$jniLibDir/$abi/build-android-log.txt")
+
+            // Cleanup.
+            if(logFile.exists()){
+                logFile.delete()
+            }
+
+            def process = "build-android.sh $ndkPath -s $sdkVersion -a $abi".execute()
+            process.waitForProcessOutput(System.out, logFile.newDataOutputStream())
+            def exitCode = process.exitValue()
+            if (exitCode == 0) {
+                System.out.println("Build successful for abi $abi see logfile $logFile for more infos.")
+                // Copy created .so file.
+                def liboqsFile = file("$liboqsBuildDir/liboqs.so")
+                def abiFile = file("$jniLibDir/liboqs.so")
+                Files.copy(liboqsFile, abiFile)
+                // TODO: Remove log file.
+
+                // TODO: Copy include folder..
+            } else {
+                System.err.println("Failed to build abi $abi see logfile $logFile for more infos.")
+            }
+        }
+    }
 }
