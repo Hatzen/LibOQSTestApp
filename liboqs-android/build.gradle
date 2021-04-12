@@ -1,9 +1,6 @@
 plugins {
     id 'com.android.library'
-    id 'org.ajoberstar.grgit' version '4.0.2' apply false
 }
-import org.ajoberstar.grgit.Grgit
-
 
 android {
     compileSdkVersion 30
@@ -77,12 +74,17 @@ def ndkPath = "$prebuiltRoot/android-ndk-r21"
 def jniLibDir = "jni/jniLibs"
 
 tasks.register('cloneLiboqs') {
-    // https://stackoverflow.com/a/24195891/8524651
-    Grgit.clone(dir: file("$prebuiltRoot/liboqs"), uri: 'git@github.com:open-quantum-safe/liboqs.git')
+    doLast {
+        File runningDir = file("$prebuiltRoot/liboqs")
+        runningDir.mkdirs()
+        workingDir = runningDir
+        def process = 'git clone --recursive -j8 -n https://github.com/open-quantum-safe/liboqs.git'.execute()
+        process.waitForProcessOutput(System.out, System.err)
+    }
 }
 
 tasks.register('initEnv') {
-    // workingDir prebuiltRoot
+    workingDir prebuiltRoot
     'apt-get update'
     'wget https://dl.google.com/android/repository/android-ndk-r21-linux-x86_64.zip '
     'apt-get install unzip'
@@ -96,7 +98,7 @@ tasks.register('buildAllLibs') {
             System.err.println("Need unix system for compiling prebuild liboqs.so files")
         }
         dependsOn 'cloneLiboqs'
-        // workingDir $liboqsScriptsDir
+        workingDir file(liboqsScriptsDir)
         // workingDir "$projectDir"
 
         def sdkVersion = 19
