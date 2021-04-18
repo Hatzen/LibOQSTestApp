@@ -25,5 +25,15 @@ There seems to be an issue (or further configuration) with compiling for 32 Bit 
 The jni files (https://github.com/Hatzen/LibOQSTestApp/tree/master/app/jni/jni) are slightly modified (package name changes and a minor fix) to compile successfully.  
 And the way of loading the liboqs.so files had to be changed: https://github.com/Hatzen/LibOQSTestApp/blob/master/liboqs-android/src/main/java/com/example/liboqs/Common.java#L31
   
+  
+## OpenSSL:  
+in some cases it might be a better solution to use the openssl implementation.
+But using it globally for all applications will require rooting the device and specific configurations.  
+Using it only for your own android application will require further investigation, but is possible:    
+https://stackoverflow.com/questions/3046573/how-to-use-openssl-library-in-the-android-application
+https://proandroiddev.com/tutorial-compile-openssl-to-1-1-1-for-android-application-87137968fee
+https://stackoverflow.com/a/54053709/8524651
+https://wiki.openssl.org/index.php/Android
+
 ## TODOs
  - [ ] Setup CI to use newest versions of jni and liboqs
