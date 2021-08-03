@@ -17,7 +17,7 @@ android {
 
         // https://developer.android.com/ndk/guides/abis#gc
         ndk {
-            // Only support 64 bit systems (as liboqs does not build others)
+            // Only support 64 bit systems (as liboqs does not build others yet #2 and #3)
             abiFilters 'arm64-v8a', 'x86_64'
         }
     }
@@ -39,7 +39,7 @@ android {
 
     externalNativeBuild {
         ndkBuild {
-            // Tells Gradle to put outputs from external native
+            // Tells Gradle to put outputs/logs from external native
             // builds in the path specified below.
             buildStagingDirectory "./outputs/ndk-build"
             path 'jni/Android.mk'
