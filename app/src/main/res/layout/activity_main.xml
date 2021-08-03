@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".MainActivity">
+    tools:context="de.hartz.software.unoffical.liboqstestapp.MainActivity">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/simpleTabLayout"
