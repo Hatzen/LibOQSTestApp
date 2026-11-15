@@ -1,1 +1,8 @@
 /build
+/outputs
+/prebuild-liboqs
+/liboqs-java
+/jni/include
+/jni/jni
+/jni/jniLibs
+/src/main/java/org/openquantumsafe

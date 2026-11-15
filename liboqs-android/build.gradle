@@ -2,12 +2,51 @@ plugins {
     id 'com.android.library'
 }
 
+def supportedAbis = ['armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64']
+def requestedAbisProp = project.findProperty('abis')?.toString()?.trim()
+def requestedAbisEnv = System.getenv('ABIS')?.trim()
+def requestedAbisRaw = requestedAbisProp ?: requestedAbisEnv
+def targetAbis = requestedAbisRaw
+        ? requestedAbisRaw.split(/[\s,]+/).findAll { it }
+        : (supportedAbis.findAll { file("jni/jniLibs/${it}/liboqs.so").exists() } ?: supportedAbis)
+
+def isWindows = System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')
+def gitBash = new File('C:/Program Files/Git/bin/bash.exe')
+def bashExecutable = isWindows && gitBash.exists() ? gitBash.absolutePath : 'bash'
+
+task initPrebuiltLiboqs(type: Exec) {
+    description = 'Fetches and builds liboqs and liboqs-java native/Java sources if missing.'
+    workingDir = projectDir
+    commandLine bashExecutable, 'init-prebuilt-liboqs.sh'
+    doFirst {
+        environment 'ABIS', targetAbis.join(' ')
+        if (project.android.sdkDirectory != null) {
+            environment 'ANDROID_SDK_ROOT', project.android.sdkDirectory.absolutePath
+        }
+    }
+}
+
+def hasPrebuiltOqs = {
+    file('jni/include/oqs/oqs.h').exists() &&
+            (file('jni/jni').listFiles()?.any { it.name.endsWith('.c') } ?: false) &&
+            file('src/main/java/org/openquantumsafe/Common.java').exists() &&
+            targetAbis.every { file("jni/jniLibs/${it}/liboqs.so").exists() }
+}
+
+afterEvaluate {
+    tasks.named('preBuild').configure {
+        if (!hasPrebuiltOqs()) {
+            dependsOn initPrebuiltLiboqs
+        }
+    }
+}
+
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.0"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -17,8 +56,7 @@ android {
 
         // https://developer.android.com/ndk/guides/abis#gc
         ndk {
-            // Only support 64 bit systems (as liboqs does not build others)
-            abiFilters 'arm64-v8a', 'x86_64'
+            abiFilters(*targetAbis)
         }
     }
 

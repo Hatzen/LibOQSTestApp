@@ -4,12 +4,11 @@ plugins {
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.0"
-    ndkVersion '21.2.6472646'
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.liboqstestapp"
-        minSdkVersion 16
+        applicationId "de.hartz.software.unofficial.liboqstestapp"
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
