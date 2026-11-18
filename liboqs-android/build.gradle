@@ -33,9 +33,42 @@ def hasPrebuiltOqs = {
             targetAbis.every { file("jni/jniLibs/${it}/liboqs.so").exists() }
 }
 
+def hasNewerFile = { File rootDir, long thresholdMtime ->
+    def stack = new ArrayDeque<File>()
+    stack.push(rootDir)
+    while (!stack.isEmpty()) {
+        def dir = stack.pop()
+        def children = dir.listFiles()
+        if (children == null) continue
+        for (File f : children) {
+            if (f.isDirectory()) {
+                if (f.name != '.git' && f.name != 'build') {
+                    stack.push(f)
+                }
+            } else if (f.lastModified() > thresholdMtime) {
+                return true
+            }
+        }
+    }
+    return false
+}
+
+def hasModifiedPrebuiltSources = {
+    def libFiles = targetAbis.collect { file("jni/jniLibs/${it}/liboqs.so") }
+    if (libFiles.isEmpty() || libFiles.any { !it.exists() }) {
+        return false
+    }
+    long oldestLibMtime = libFiles.collect { it.lastModified() }.min()
+    def sourceRoots = [
+            file('prebuild-liboqs/liboqs/src'),
+            file('prebuild-liboqs/liboqs-java/src/main')
+    ].findAll { it.isDirectory() }
+    return sourceRoots.any { hasNewerFile(it, oldestLibMtime) }
+}
+
 afterEvaluate {
     tasks.named('preBuild').configure {
-        if (!hasPrebuiltOqs()) {
+        if (project.hasProperty('rebuildLiboqs') || !hasPrebuiltOqs() || hasModifiedPrebuiltSources()) {
             dependsOn initPrebuiltLiboqs
         }
     }
@@ -44,6 +77,9 @@ afterEvaluate {
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
+    if (rootProject.ext.detectedNdkPath != null) {
+        ndkPath rootProject.ext.detectedNdkPath
+    }
 
     defaultConfig {
         minSdkVersion 21

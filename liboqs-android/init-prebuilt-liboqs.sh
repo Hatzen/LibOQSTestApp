@@ -16,7 +16,8 @@ JAVA_OQS_DIR="${JAVA_SRC_DIR}/org/openquantumsafe"
 
 SDK_VERSION="${SDK_VERSION:-21}"
 ABIS_INPUT="${ABIS:-armeabi-v7a arm64-v8a x86 x86_64}"
-NDK_PATH="${ANDROID_NDK_HOME:-${ANDROID_NDK_ROOT:-${ANDROID_NDK:-}}}"
+NDK_PATH="${ANDROID_NDK_LATEST_HOME:-${ANDROID_NDK_HOME:-${ANDROID_NDK_ROOT:-${ANDROID_NDK:-}}}}"
+USER_CMAKE_FLAGS="${EXTRA_CMAKE_FLAGS:-}"
 CLEAN=false
 LIBOQS_REPO="${LIBOQS_REPO:-https://github.com/open-quantum-safe/liboqs.git}"
 LIBOQS_JAVA_REPO="${LIBOQS_JAVA_REPO:-https://github.com/open-quantum-safe/liboqs-java.git}"
@@ -28,11 +29,12 @@ show_help() {
 Usage: ./init-prebuilt-liboqs.sh [options]
 
 Options:
-  -n, --ndk <dir>        Path to Android NDK directory (auto-detected if omitted)
-  -a, --abis <abis>      Space or comma-separated Android ABIs (default: "armeabi-v7a arm64-v8a x86 x86_64")
-  -s, --sdk <version>    Minimum Android SDK API level for liboqs (default: 21)
-  -c, --clean            Remove existing prebuild-liboqs clones before cloning fresh
-  -h, --help             Show this help message
+  -n, --ndk <dir>           Path to Android NDK directory (auto-detected if omitted)
+  -a, --abis <abis>         Space or comma-separated Android ABIs (default: "armeabi-v7a arm64-v8a x86 x86_64")
+  -s, --sdk <version>       Minimum Android SDK API level for liboqs (default: 21)
+  -f, --cmake-flags <flags> Additional CMake flags passed to liboqs build (env: EXTRA_CMAKE_FLAGS)
+  -c, --clean               Remove existing prebuild-liboqs clones before cloning fresh
+  -h, --help                Show this help message
 EOF
 }
 
@@ -48,6 +50,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         -s|--sdk)
             SDK_VERSION="$2"
+            shift 2
+            ;;
+        -f|--cmake-flags)
+            USER_CMAKE_FLAGS="$2"
             shift 2
             ;;
         -c|--clean)
@@ -278,6 +284,9 @@ EXTRA_CMAKE_FLAGS="-DOQS_BUILD_ONLY_LIB=ON"
 if command -v ninja >/dev/null 2>&1; then
     EXTRA_CMAKE_FLAGS="${EXTRA_CMAKE_FLAGS} -G Ninja"
 fi
+if [[ -n "${USER_CMAKE_FLAGS}" ]]; then
+    EXTRA_CMAKE_FLAGS="${EXTRA_CMAKE_FLAGS} ${USER_CMAKE_FLAGS}"
+fi
 
 ABIS_NORMALIZED="${ABIS_INPUT//,/ }"
 LAST_BUILD_DIR=""
@@ -320,5 +329,15 @@ rm -rf "${JNI_INCLUDE_DIR}"
 mkdir -p "${JNI_INCLUDE_DIR}"
 cp -r "${LAST_BUILD_DIR}/include/oqs/." "${JNI_INCLUDE_DIR}/"
 
+LIBOQS_COMMIT="$(git -C "${LIBOQS_DIR}" rev-parse --short HEAD) ($(git -C "${LIBOQS_DIR}" log -1 --format=%cs))"
+LIBOQS_JAVA_COMMIT="$(git -C "${LIBOQS_JAVA_DIR}" rev-parse --short HEAD) ($(git -C "${LIBOQS_JAVA_DIR}" log -1 --format=%cs))"
+cat > "${SCRIPT_DIR}/jni/build-info.txt" <<EOF
+liboqs: ${LIBOQS_COMMIT}
+liboqs-java: ${LIBOQS_JAVA_COMMIT}
+abis: ${ABIS_NORMALIZED}
+sdk: ${SDK_VERSION}
+EOF
+
 echo "Done! Prebuilt liboqs libraries and headers are ready."
+cat "${SCRIPT_DIR}/jni/build-info.txt"
 

@@ -1,19 +1,20 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-# old Task:
-#./gradlew connectedCheck
-#      - name: Output Crash
-#        run: cat app/build/reports/androidTests/connected/flavors/debugAndroidTest/index.html
+# Android SDK cmdline-tools require JDK 17+, whereas Gradle 6.5 / AGP 4.1.0 require JDK 8 or 11.
+if [[ -n "${GRADLE_JAVA_HOME:-}" ]]; then
+  export JAVA_HOME="${GRADLE_JAVA_HOME}"
+  export PATH="${JAVA_HOME}/bin:${PATH}"
+elif [[ -n "${JAVA_HOME_11_X64:-}" ]]; then
+  export JAVA_HOME="${JAVA_HOME_11_X64}"
+  export PATH="${JAVA_HOME}/bin:${PATH}"
+fi
 
-# News Task from: https://github.com/kiwix/kiwix-android/blob/develop/contrib/instrumentation_nightly.sh
+adb devices -l || true
 
-#adb logcat -c
-#adb logcat *:E -v color &
-#adb logcat -v brief output # leads to endless loop?
-if ./gradlew connectedCheck; then
+if ./gradlew connectedCheck --no-daemon; then
   echo "connectedDebugAndroidTest succeeded" >&2
 else
-  adb logcat -d
-  # cat app/build/reports/androidTests/connected/flavors/debugAndroidTest/index.html
+  { adb logcat -d | tail -n 400; } || true
   exit 1
 fi

@@ -1,83 +1,179 @@
-name: Test Liboqs on Android
+name: Test and Release Liboqs Android
 
 on:
   push:
     branches:
       - master
+    tags:
+      - 'v*'
   pull_request:
     branches:
       - master
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
-  UnitTest:
+  BuildAndUnitTest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK 11
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '11'
-      - name: Make scripts executable
-        run: chmod +x gradlew liboqs-android/init-prebuilt-liboqs.sh
-      - name: Initialize prebuilt liboqs (x86_64)
-        env:
-          ABIS: x86_64
-        run: bash liboqs-android/init-prebuilt-liboqs.sh
-      - name: Unit tests
-        run: ./gradlew test
+      - uses: actions/checkout@v6
 
-  BuildArtifacts:
-    needs: UnitTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
       - name: Set up JDK 11
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '11'
+          cache: 'gradle'
+
       - name: Make scripts executable
-        run: chmod +x gradlew liboqs-android/init-prebuilt-liboqs.sh
-      - name: Initialize prebuilt liboqs (all ABIs)
+        run: chmod +x gradlew liboqs-android/init-prebuilt-liboqs.sh .github/logTest.sh
+
+      - name: Compile liboqs and prepare liboqs-java from source (all ABIs)
         run: bash liboqs-android/init-prebuilt-liboqs.sh
-      - name: Build with Gradle
-        run: ./gradlew assembleDebug assembleDebugAndroidTest
-      - name: Upload Debug APK
-        uses: actions/upload-artifact@v4
+
+      - name: Run unit tests and build APK & AARs
+        run: ./gradlew test assembleDebug :liboqs-android:assembleRelease assembleDebugAndroidTest --no-daemon
+
+      - name: Package release assets
+        run: |
+          mkdir -p release-assets
+          cp app/build/outputs/apk/debug/app-debug.apk release-assets/app-debug.apk
+          cp liboqs-android/build/outputs/aar/liboqs-android-release.aar release-assets/liboqs-android-release.aar
+          cp liboqs-android/build/outputs/aar/liboqs-android-debug.aar release-assets/liboqs-android-debug.aar
+          (cd liboqs-android/jni && zip -r "${GITHUB_WORKSPACE}/release-assets/liboqs-android-natives.zip" jniLibs include build-info.txt)
+          {
+            echo "## Build Info (Compiled from Upstream Source)"
+            echo ""
+            echo '```'
+            cat liboqs-android/jni/build-info.txt
+            echo '```'
+            echo ""
+            echo "## Included Assets"
+            echo "- \`liboqs-android-release.aar\` / \`liboqs-android-debug.aar\`: Android library AARs bundling \`liboqs.so\` and \`liboqs-jni.so\` for \`armeabi-v7a\`, \`arm64-v8a\`, \`x86\`, and \`x86_64\`"
+            echo "- \`app-debug.apk\`: Demo Android app built against \`liboqs-android\`"
+            echo "- \`liboqs-android-natives.zip\`: Compiled \`liboqs.so\` shared libraries (all 4 ABIs), generated headers, and \`build-info.txt\`"
+          } > release-assets/RELEASE_NOTES.md
+
+      - name: Upload release assets artifact
+        uses: actions/upload-artifact@v6
         with:
-          name: Debug Apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: release-assets
+          path: release-assets/
+          if-no-files-found: error
+
+      - name: Archive x86_64 native & Java files for instrumented tests
+        run: |
+          tar -czf generated-oqs-x86_64.tar.gz \
+            liboqs-android/jni/include \
+            liboqs-android/jni/jni \
+            liboqs-android/jni/jniLibs/x86_64 \
+            liboqs-android/jni/build-info.txt \
+            liboqs-android/src/main/java/org/openquantumsafe
+
+      - name: Upload x86_64 native & Java bundle
+        uses: actions/upload-artifact@v6
+        with:
+          name: generated-oqs-x86_64
+          path: generated-oqs-x86_64.tar.gz
+          if-no-files-found: error
 
   InstrumentedTests:
-    needs: BuildArtifacts
+    needs: BuildAndUnitTest
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     strategy:
       matrix:
         api-level: [21]
         arch: [x86_64]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-      - name: Set up JDK 11
-        uses: actions/setup-java@v4
+        uses: actions/checkout@v6
+
+      - name: Set up JDK 17 (for Android SDK cmdline-tools)
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up JDK 11 (for Gradle / AGP)
+        id: jdk11
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '11'
+          set-default: false
+          cache: 'gradle'
+
       - name: Enable KVM group perms
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
+
       - name: Make scripts executable
         run: chmod +x ./gradlew ./liboqs-android/init-prebuilt-liboqs.sh ./.github/logTest.sh
-      - name: Initialize prebuilt liboqs (${{ matrix.arch }})
-        env:
-          ABIS: ${{ matrix.arch }}
-        run: bash liboqs-android/init-prebuilt-liboqs.sh
+
+      - name: Download compiled x86_64 native & Java bundle
+        uses: actions/download-artifact@v7
+        with:
+          name: generated-oqs-x86_64
+
+      - name: Restore x86_64 native & Java files
+        run: tar -xzf generated-oqs-x86_64.tar.gz && rm -f generated-oqs-x86_64.tar.gz
+
       - name: Run instrumented tests
         uses: reactivecircus/android-emulator-runner@v2
+        env:
+          GRADLE_JAVA_HOME: ${{ steps.jdk11.outputs.path }}
         with:
           api-level: ${{ matrix.api-level }}
           arch: ${{ matrix.arch }}
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -camera-back none
           script: bash .github/logTest.sh
+
+  Release:
+    needs: [BuildAndUnitTest, InstrumentedTests]
+    runs-on: ubuntu-latest
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v'))) || github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Download release assets
+        uses: actions/download-artifact@v7
+        with:
+          name: release-assets
+          path: release-assets
+
+      - name: Determine release metadata
+        id: meta
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            echo "tag=${GITHUB_REF_NAME}" >> "${GITHUB_OUTPUT}"
+            echo "title=Release ${GITHUB_REF_NAME}" >> "${GITHUB_OUTPUT}"
+          else
+            TAG="latest-${GITHUB_REF_NAME//\//-}"
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git tag -f "${TAG}" "${GITHUB_SHA}"
+            git push -f origin "refs/tags/${TAG}"
+            echo "tag=${TAG}" >> "${GITHUB_OUTPUT}"
+            echo "title=Latest ${GITHUB_REF_NAME} build" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.meta.outputs.tag }}
+          name: ${{ steps.meta.outputs.title }}
+          body_path: release-assets/RELEASE_NOTES.md
+          make_latest: ${{ startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/master' }}
+          prerelease: false
+          files: |
+            release-assets/liboqs-android-release.aar
+            release-assets/liboqs-android-debug.aar
+            release-assets/app-debug.apk
+            release-assets/liboqs-android-natives.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

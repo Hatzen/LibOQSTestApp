@@ -5,4 +5,5 @@
 /jni/include
 /jni/jni
 /jni/jniLibs
+/jni/build-info.txt
 /src/main/java/org/openquantumsafe
